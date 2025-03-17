@@ -1,0 +1,44 @@
+
+services:
+  db:
+    image: postgres:15
+    container_name: db
+    environment:
+      POSTGRES_DB: db_wallet
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: zxc123
+      PGDATA: /tmpdata
+    volumes:
+      - pgdata:/tmpdata
+    networks:
+      - my_network
+    ports:
+      - "127.0.0.1:5432:5432"
+
+  
+  django:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: django_app
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=db_wallet
+      - DB_USER=user
+      - DB_PASSWORD=zxc123
+    depends_on:
+      - db
+    ports:
+      - "127.0.0.2:8000:8000"
+    networks:
+      - my_network
+    volumes:
+      - ../project/django:/app
+
+networks:
+  my_network:
+    driver: bridge
+
+volumes:
+  pgdata:
