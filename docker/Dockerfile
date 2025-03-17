@@ -8,6 +8,7 @@ WORKDIR /app
 RUN pip install django
 RUN pip install djangorestframework
 RUN pip install psycopg2
+RUN pip install djoser
 
 # Открываем порт для Django
 EXPOSE 8000
